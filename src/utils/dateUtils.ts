@@ -18,18 +18,7 @@ export const formatDate = (date: Date): string => {
 
 export const getTodayString = (): string => {
   const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  return `${year}-${month}-${day}`; // YYYY-MM-DD
-};
-
-export const getTodayStringFormatted = (): string => {
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = String(today.getMonth() + 1).padStart(2, '0');
-  const day = String(today.getDate()).padStart(2, '0');
-  return `${day}-${month}-${year}`; // DD-MM-YYYY
+  return today.toISOString().split('T')[0]; // YYYY-MM-DD
 };
 
 // Converte horas decimais para formato HH:MM

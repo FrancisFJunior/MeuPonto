@@ -192,7 +192,6 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   content: {
-    height: '100%',
     backgroundColor: '#F9FAFB',
     borderTopLeftRadius: 24,
     borderTopRightRadius: 24,

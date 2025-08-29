@@ -198,10 +198,10 @@ export const EditarPontoModal: React.FC<EditarPontoModalProps> = ({
                             onChangeText={setNovoHorario}
                             placeholder="HH:MM"
                             placeholderTextColor="#9CA3AF"
-                            keyboardType="numbers-and-punctuation"
+                            keyboardType="numeric"
                           />
                           <TouchableOpacity
-                            style={styles.saveEditButton}
+                            style={styles.saveButton}
                             onPress={() => salvarHorario(index)}
                           >
                             <Ionicons name="checkmark" size={16} color="#FFFFFF" />
@@ -276,9 +276,8 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     borderRadius: 20,
     width: '100%',
-    height: '80%',
     maxWidth: 500,
-    maxHeight: 1000,
+    maxHeight: '80%',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -406,7 +405,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFFFFF',
     minWidth: 80,
   },
-  saveEditButton: {
+  saveButton: {
     padding: 8,
     backgroundColor: '#10B981',
     borderRadius: 8,

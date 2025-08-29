@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { 
   TouchableOpacity, 
   Text, 
@@ -12,7 +12,7 @@ import {
 import { useAppContext } from '../context/AppContext';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
-import { formatTime, getTodayStringFormatted } from '../utils/dateUtils';
+import { formatTime, getTodayString } from '../utils/dateUtils';
 
 interface FloatingActionButtonProps {
   onPress?: () => void;
@@ -32,18 +32,14 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
   
   const canBaterPonto = state.currentDayPonto ? state.currentDayPonto.horarios.length < 8 : true;
 
-  // Preencher campos quando o modal é exibido
-  useEffect(() => {
-    if (showModal || visible) {
-      const now = new Date();
-      setCustomTime(formatTime(now));
-      setCustomDate(getTodayStringFormatted());
-    }
-  }, [showModal, visible]);
-
   const handlePress = () => {
     if (!canBaterPonto) return;
     setShowModal(true);
+    
+    // Preencher com valores atuais
+    const now = new Date();
+    setCustomTime(formatTime(now));
+    setCustomDate(getTodayString());
   };
 
   const handleBaterPonto = async () => {
@@ -53,21 +49,9 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
     }
 
     try {
-      // Combinar data e hora customizadas
-      const [day, month, year] = customDate.split('-').map(Number);
-      const [hours, minutes] = customTime.split(':').map(Number);
-      
-      // Criar um objeto Date com a data e hora customizadas
-      const customDateTime = new Date(year, month - 1, day, hours, minutes);
-      
-      // Verificar se a data é válida
-      if (isNaN(customDateTime.getTime())) {
-        Alert.alert('Erro', 'Data ou hora inválida');
-        return;
-      }
-      
-      // Chamar a função baterPonto com a data customizada
-      await baterPonto(customDateTime);
+      // Aqui você pode implementar a lógica para bater ponto com hora/data customizada
+      // Por enquanto, vamos usar a função padrão
+      await baterPonto();
       setShowModal(false);
       setCustomTime('');
       setCustomDate('');
@@ -115,7 +99,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
                       onChangeText={setCustomTime}
                       placeholder="HH:MM"
                       placeholderTextColor="#9CA3AF"
-                      keyboardType="numbers-and-punctuation"
+                      keyboardType="numeric"
                     />
                   </View>
                 </View>
@@ -128,7 +112,7 @@ export const FloatingActionButton: React.FC<FloatingActionButtonProps> = ({
                       style={styles.input}
                       value={customDate}
                       onChangeText={setCustomDate}
-                      placeholder="DD-MM-YYYY"
+                      placeholder="YYYY-MM-DD"
                       placeholderTextColor="#9CA3AF"
                     />
                   </View>

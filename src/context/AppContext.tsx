@@ -113,7 +113,7 @@ function appReducer(state: AppState, action: AppAction): AppState {
 interface AppContextType {
   state: AppState;
   dispatch: React.Dispatch<AppAction>;
-  baterPonto: (customDate?: Date) => Promise<void>;
+  baterPonto: () => Promise<void>;
   loadInitialData: () => Promise<void>;
   editarPonto: (dia: string, horarios: string[]) => Promise<void>;
   apagarPonto: (dia: string) => Promise<void>;
@@ -166,29 +166,19 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
     }
   };
 
-  const baterPonto = async (customDate?: Date) => {
+  const baterPonto = async () => {
     if (!state.user) return;
     
     try {
-      const now = customDate || new Date();
-      const today = customDate ? 
-        customDate.toISOString().split('T')[0] : 
-        getTodayString();
-        
+      const now = new Date();
+      const today = getTodayString();
       const currentTime = now.toLocaleTimeString('pt-BR', {
         hour: '2-digit',
         minute: '2-digit',
         hour12: false,
       });
       
-      // Para debugging
-      const currentDate = getTodayString();
-      console.log('Bater ponto - today:', today);
-      console.log('Bater ponto - currentDate:', currentDate);
-      console.log('Bater ponto - today === currentDate:', today === currentDate);
-      
-      // Encontrar ponto existente para a data especificada
-      let todayPonto = state.pontos.find(p => p.dia === today) || null;
+      let todayPonto = state.currentDayPonto;
       
       if (!todayPonto) {
         todayPonto = {
@@ -218,14 +208,7 @@ export const AppProvider: React.FC<AppProviderProps> = ({ children }) => {
       
       // Atualizar o estado
       dispatch({ type: 'ADD_PONTO', payload: updatedPonto });
-      
-      // Sempre atualizar o currentDayPonto se for o dia atual
-      // Isso garante que o TimelineCard mostre as atualizações em tempo real
-      if (today === currentDate) {
-        console.log('Atualizando currentDayPonto:', updatedPonto);
-        dispatch({ type: 'SET_CURRENT_DAY_PONTO', payload: updatedPonto });
-      }
-      
+      dispatch({ type: 'SET_CURRENT_DAY_PONTO', payload: updatedPonto });
       dispatch({ type: 'CALCULATE_BANCO_HORAS' });
       
       console.log('Ponto salvo com sucesso:', updatedPonto);

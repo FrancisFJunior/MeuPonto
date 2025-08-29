@@ -130,7 +130,6 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   gradientBackground: {
-    maxHeight: 500,
     borderRadius: 20,
     padding: 24,
   },
@@ -216,7 +215,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
   },
   horariosList: {
-    maxHeight: '100%',
+    maxHeight: 200,
   },
   horarioItem: {
     flexDirection: 'row',
