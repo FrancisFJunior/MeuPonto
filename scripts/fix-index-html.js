@@ -27,7 +27,8 @@ function createCustomIndexHtml() {
   
   // Pegar o primeiro arquivo JS (deveria ser o único)
   const jsFileName = jsFiles[0];
-  const jsFilePath = `/_expo/static/js/web/${jsFileName}`;
+  // Corrigir o caminho para ser relativo à raiz do site
+  const jsFilePath = `/static/js/web/${jsFileName}`;
   
   console.log('Arquivo JS encontrado:', jsFileName);
   
