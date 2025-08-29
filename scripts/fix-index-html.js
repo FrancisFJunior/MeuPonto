@@ -12,8 +12,18 @@ function createCustomIndexHtml() {
     process.exit(1);
   }
   
+  // Copiar arquivos de _expo/static para static na raiz
+  const expoStaticSourceDir = path.join(distPath, '_expo', 'static');
+  const staticTargetDir = path.join(distPath, 'static');
+  
+  if (fs.existsSync(expoStaticSourceDir)) {
+    // Copiar recursivamente todo o conteúdo de _expo/static para static
+    copyDir(expoStaticSourceDir, staticTargetDir);
+    console.log('Arquivos copiados de _expo/static para static');
+  }
+  
   // Encontrar o arquivo JS correto
-  const jsDir = path.join(distPath, '_expo', 'static', 'js', 'web');
+  const jsDir = path.join(distPath, 'static', 'js', 'web');
   if (!fs.existsSync(jsDir)) {
     console.error('Diretório de arquivos JS não encontrado em:', jsDir);
     process.exit(1);
@@ -27,7 +37,7 @@ function createCustomIndexHtml() {
   
   // Pegar o primeiro arquivo JS (deveria ser o único)
   const jsFileName = jsFiles[0];
-  // Corrigir o caminho para ser relativo à raiz do site
+  // O caminho correto agora é /static/js/web/
   const jsFilePath = `/static/js/web/${jsFileName}`;
   
   console.log('Arquivo JS encontrado:', jsFileName);
@@ -106,6 +116,26 @@ function createCustomIndexHtml() {
     fs.copyFileSync(indexPath, pagePath);
     console.log(`${page} criado com sucesso!`);
   });
+}
+
+// Função auxiliar para copiar diretórios recursivamente
+function copyDir(src, dest) {
+  if (!fs.existsSync(dest)) {
+    fs.mkdirSync(dest, { recursive: true });
+  }
+  
+  const entries = fs.readdirSync(src, { withFileTypes: true });
+  
+  for (let entry of entries) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    
+    if (entry.isDirectory()) {
+      copyDir(srcPath, destPath);
+    } else {
+      fs.copyFileSync(srcPath, destPath);
+    }
+  }
 }
 
 // Executar a função
