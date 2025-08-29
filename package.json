@@ -8,8 +8,8 @@
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject",
-    "build": "expo export:web",
-    "vercel-build": "expo export:web"
+    "build": "expo export --platform web",
+    "vercel-build": "expo export --platform web"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^2.2.0",
