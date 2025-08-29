@@ -9,8 +9,7 @@
     "web": "expo start --web",
     "eject": "expo eject",
     "build": "expo export --platform web",
-    "postbuild": "node scripts/fix-index-html.js",
-    "vercel-build": "expo export --platform web && node scripts/fix-index-html.js"
+    "vercel-build": "expo export --platform web"
   },
   "dependencies": {
     "@expo/metro-runtime": "~5.0.4",
