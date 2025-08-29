@@ -3,7 +3,9 @@ const path = require('path');
 
 // Função para criar um index.html personalizado
 function createCustomIndexHtml() {
-  const indexPath = path.join(__dirname, 'dist', 'index.html');
+  // Caminho correto para o diretório dist
+  const distPath = path.join(__dirname, '..', 'dist');
+  const indexPath = path.join(distPath, 'index.html');
   
   const customIndexHtml = `<!DOCTYPE html>
 <html lang="en">
@@ -67,13 +69,20 @@ function createCustomIndexHtml() {
   </body>
 </html>`;
   
+  // Verificar se o diretório dist existe
+  if (!fs.existsSync(distPath)) {
+    console.error('Diretório dist não encontrado em:', distPath);
+    process.exit(1);
+  }
+  
+  // Criar ou sobrescrever o index.html
   fs.writeFileSync(indexPath, customIndexHtml);
-  console.log('index.html personalizado criado com sucesso!');
+  console.log('index.html personalizado criado com sucesso em:', indexPath);
   
   // Copiar para todas as outras páginas
   const pages = ['perfil.html', 'historico.html', 'onboarding.html', '_sitemap.html', '+not-found.html'];
   pages.forEach(page => {
-    const pagePath = path.join(__dirname, 'dist', page);
+    const pagePath = path.join(distPath, page);
     fs.copyFileSync(indexPath, pagePath);
     console.log(`${page} criado com sucesso!`);
   });
